@@ -15,8 +15,9 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("/all")
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovie();
+    public ResponseEntity<?> getAllMovies() {
+        List<Movie> movies = movieService.getAllMovie();
+        return ResponseEntity.ok(movies);
     }
 
     @PostMapping("")

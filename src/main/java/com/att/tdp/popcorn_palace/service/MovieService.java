@@ -20,11 +20,11 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Movie getMovieById(Long id) {
-        return movieRepository.findById(id).orElse(null);
-    }
-
     public Movie saveMovie(Movie movie) {
+        if (movie.getId() != null) {
+            throw new IllegalArgumentException("Can't assign the id of a new entity");
+        }
+
         if (isMovieExist(movie.getTitle())) {
             throw new IllegalArgumentException("Movie already exists with title - " + movie.getTitle());
         }
@@ -50,6 +50,10 @@ public class MovieService {
     }
 
     public Movie updateMovie(String movieTitle, Movie movie) {
+        if (movie.getId() != null) {
+            throw new IllegalArgumentException("Can't assign the id of a new entity");
+        }
+
         Movie existingMovie = movieRepository.getMovieByTitle(movieTitle);
         if (existingMovie == null) {
             throw new ResourceNotFoundException("Movie not found with title - " + movieTitle);
@@ -74,6 +78,10 @@ public class MovieService {
 
     public boolean isMovieExist(String title) {
         return movieRepository.getMovieByTitle(title) != null;
+    }
+
+    public boolean isMovieExistById(Long id) {
+        return movieRepository.existsById(id);
     }
 
 }
