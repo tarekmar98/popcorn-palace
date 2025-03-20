@@ -21,3 +21,12 @@ CREATE TABLE IF NOT EXISTS showtime (
     price DOUBLE PRECISION,
     CONSTRAINT fk_movie FOREIGN KEY (movieId) REFERENCES movie(id)
 );
+
+CREATE TABLE IF NOT EXISTS ticket (
+    bookingId UUID,
+    showtimeId INT,
+    seatNumber INT,
+    userId UUID,
+    CONSTRAINT fk_showtime FOREIGN KEY (showtimeId) REFERENCES Showtime(id),
+    CONSTRAINT unique_seat_showtime UNIQUE (seatNumber, showtimeId)
+);
