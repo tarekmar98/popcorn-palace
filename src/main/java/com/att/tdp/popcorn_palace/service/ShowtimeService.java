@@ -44,6 +44,11 @@ public class ShowtimeService {
             throw new IllegalArgumentException(validation);
         }
 
+        if (checkOverLap(showtime, showtimesSameTheater)) {
+            throw new IllegalArgumentException("The showtime overlaps with an existing schedule for the same theater." +
+                    " Please select a different time.");
+        }
+
         return showtimeRepository.save(showtime);
     }
 
@@ -82,32 +87,37 @@ public class ShowtimeService {
             throw new IllegalArgumentException(validation);
         }
 
+        if (checkOverLap(showtime, showtimesSameTheater)) {
+            throw new IllegalArgumentException("The showtime overlaps with an existing schedule for the same theater." +
+                    " Please select a different time.");
+        }
+
         Showtime existingShowtime = getShowtimeById(showtimeId);
-        if (showtime.getMovieId() != null) {
-            existingShowtime.setMovieId(showtime.getMovieId());
-        }
-
-        if (showtime.getTheater() != null) {
-            existingShowtime.setTheater(showtime.getTheater());
-        }
-
-        if (showtime.getStartTime() != null) {
-            existingShowtime.setStartTime(showtime.getStartTime());
-        }
-
-        if (showtime.getEndTime() != null) {
-            existingShowtime.setEndTime(showtime.getEndTime());
-        }
-
-        if (showtime.getPrice() != null) {
-            existingShowtime.setPrice(showtime.getPrice());
-        }
-
+        existingShowtime.setMovieId(showtime.getMovieId());
+        existingShowtime.setTheater(showtime.getTheater());
+        existingShowtime.setStartTime(showtime.getStartTime());
+        existingShowtime.setEndTime(showtime.getEndTime());
+        existingShowtime.setPrice(showtime.getPrice());
         return showtimeRepository.save(existingShowtime);
     }
 
     public boolean isShowtimeExist(Long showtimeId) {
         return showtimeRepository.existsById(showtimeId);
+    }
+
+    public boolean checkOverLap(Showtime showtime, List<Showtime> showtimesSameTheater) {
+        for (Showtime showtimeIter : showtimesSameTheater) {
+            if (!showtimeIter.getId().equals(showtime.getId())
+                    && ((showtimeIter.getStartTime().compareTo(showtime.getStartTime()) <= 0
+                    && showtime.getStartTime().compareTo(showtimeIter.getEndTime()) <= 0)
+                    || (showtimeIter.getStartTime().compareTo(showtime.getEndTime()) <= 0
+                    && showtime.getEndTime().compareTo(showtimeIter.getEndTime()) <= 0))) {
+                return true;
+
+            }
+        }
+
+        return false;
     }
 
 }

@@ -59,22 +59,6 @@ public class Showtime {
             return "Showtime price cannot be negative";
         }
 
-        return checkOverLap(showtimesSameTheater);
-    }
-
-    public String checkOverLap(List<Showtime> showtimesSameTheater) {
-        for (Showtime showtimeIter : showtimesSameTheater) {
-            if (!showtimeIter.getId().equals(id)
-                    && ((showtimeIter.getStartTime().compareTo(startTime) <= 0
-                    && startTime.compareTo(showtimeIter.getEndTime()) <= 0)
-                    || (showtimeIter.getStartTime().compareTo(endTime) <= 0
-                    && endTime.compareTo(showtimeIter.getEndTime()) <= 0))) {
-                return "The showtime overlaps with an existing schedule for the same theater." +
-                        " Please select a different time.";
-
-            }
-        }
-
         return null;
     }
 

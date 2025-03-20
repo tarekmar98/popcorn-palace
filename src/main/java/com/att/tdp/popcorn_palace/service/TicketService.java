@@ -23,12 +23,12 @@ public class TicketService {
         String validation = ticket.validate();
         System.out.println(validation);
         if (validation != null) {
-            throw new ResourceNotFoundException(validation);
+            throw new IllegalArgumentException(validation);
         }
         System.out.println("2"+ticket);
 
         if (!showtimeService.isShowtimeExist(ticket.getShowtimeId())) {
-            throw new IllegalArgumentException("Showtime not found with id - " + ticket.getShowtimeId());
+            throw new ResourceNotFoundException("Showtime not found with id - " + ticket.getShowtimeId());
         }
         System.out.println("3"+ticket);
 
