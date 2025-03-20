@@ -3,6 +3,7 @@ package com.att.tdp.popcorn_palace.service;
 import com.att.tdp.popcorn_palace.entity.Showtime;
 import com.att.tdp.popcorn_palace.exception.ResourceNotFoundException;
 import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
+import com.att.tdp.popcorn_palace.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class ShowtimeService {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     public Showtime getShowtimeById(Long showtimeId) {
         Showtime showtime = showtimeRepository.findById(showtimeId).orElse(null);
@@ -49,6 +53,7 @@ public class ShowtimeService {
             throw new ResourceNotFoundException("Showtime not found with id - " + showtimeId);
         }
 
+        ticketRepository.deleteTicketByShowtimeId(showtimeId);
         showtimeRepository.deleteById(showtimeId);
     }
 
@@ -99,6 +104,10 @@ public class ShowtimeService {
         }
 
         return showtimeRepository.save(existingShowtime);
+    }
+
+    public boolean isShowtimeExist(Long showtimeId) {
+        return showtimeRepository.existsById(showtimeId);
     }
 
 }
