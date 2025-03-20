@@ -19,11 +19,11 @@ public class Movie {
     private String genre;
     private Double duration;
     private Double rating;
-    private int releaseYear;
+    private Integer releaseYear;
 
     public Movie() {}
 
-    public Movie(String title, String genre, Double duration, Double rating, int releaseYear) {
+    public Movie(String title, String genre, Double duration, Double rating, Integer releaseYear) {
         this.title = title;
         this.genre = genre;
         this.duration = duration;
@@ -56,8 +56,8 @@ public class Movie {
             return "Movie rating cannot be negative";
         }
 
-        if (releaseYear < 0) {
-            return "Movie release year cannot be negative";
+        if (releaseYear == null) {
+            return "Movie release year cannot be empty";
         }
 
         return null;
