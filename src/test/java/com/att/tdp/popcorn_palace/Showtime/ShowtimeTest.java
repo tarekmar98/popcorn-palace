@@ -1,8 +1,6 @@
 package com.att.tdp.popcorn_palace.Showtime;
 
 import com.att.tdp.popcorn_palace.entity.Showtime;
-import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
-import com.att.tdp.popcorn_palace.service.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
@@ -12,11 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ShowtimeTest {
-    @Autowired
-    private ShowtimeRepository showtimeRepository;
 
     @Autowired
     private ShowtimeTestService showtimeTestService;
@@ -38,9 +31,10 @@ public class ShowtimeTest {
     public void init() throws Exception {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        deleteAll();
+        showtimeTestService.deleteAll();
         try {
             MvcResult result = showtimeTestService.addShowtime(0);
+            assertEquals(201, result.getResponse().getStatus());
             showtime0 = objectMapper.readValue(result.getResponse().getContentAsString(), Showtime.class);
             showtime0.setMovieId(showtimeTestService.movie.getId());
         } catch (Exception e) {
@@ -49,6 +43,7 @@ public class ShowtimeTest {
 
         try {
             MvcResult result = showtimeTestService.addShowtime(1);
+            assertEquals(201, result.getResponse().getStatus());
             showtime1 = objectMapper.readValue(result.getResponse().getContentAsString(), Showtime.class);
             showtime1.setMovieId(showtimeTestService.movie.getId());
         } catch (Exception e) {
@@ -66,8 +61,8 @@ public class ShowtimeTest {
 
     @Test
     public void deleteAll() throws Exception {
-        showtimeRepository.deleteAll();
-        assertThat(showtimeRepository.findAll().isEmpty(), is(true));
+        showtimeTestService.deleteAll();
+        assertThat(showtimeTestService.showtimeRepository.findAll().isEmpty(), is(true));
     }
 
     @Test
