@@ -34,14 +34,14 @@ public class ShowtimeService {
             throw new IllegalArgumentException("Can't assign the id of a new entity");
         }
 
-        if (!movieService.isMovieExistById(showtime.getMovieId())) {
-            throw new ResourceNotFoundException("Movie not found with id - " + showtime.getMovieId());
-        }
-
         List<Showtime> showtimesSameTheater = getShowtimeByTheater(showtime.getTheater());
         String validation = showtime.validate(showtimesSameTheater);
         if (validation != null) {
             throw new IllegalArgumentException(validation);
+        }
+
+        if (!movieService.isMovieExistById(showtime.getMovieId())) {
+            throw new ResourceNotFoundException("Movie not found with id - " + showtime.getMovieId());
         }
 
         if (checkOverLap(showtime, showtimesSameTheater)) {
