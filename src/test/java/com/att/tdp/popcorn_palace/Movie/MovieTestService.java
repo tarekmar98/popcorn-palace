@@ -25,15 +25,14 @@ public class MovieTestService {
     @Autowired
     private MockMvc mockMvc;
     private Map<String, List<Movie>> updatedMovies;
-    private List<String> movieTitles;
-    private JsonNode moviesData;
+    public List<String> movieTitles;
+    public JsonNode moviesData;
     private ObjectMapper objectMapper;
-    private String resourcesRoot;
 
     public MovieTestService() {
         try {
             objectMapper = new ObjectMapper();
-            resourcesRoot = Paths.get("").toAbsolutePath() +
+            String resourcesRoot = Paths.get("").toAbsolutePath() +
                     "\\src\\test\\java\\com\\att\\tdp\\popcorn_palace\\resources\\";
             File file = new File(resourcesRoot, "DataTest.json");
             JsonNode data = objectMapper.readTree(file);
