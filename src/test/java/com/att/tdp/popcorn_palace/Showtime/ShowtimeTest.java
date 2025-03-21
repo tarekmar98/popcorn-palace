@@ -6,6 +6,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShowtimeTest {
 
     @Autowired
@@ -81,6 +85,7 @@ public class ShowtimeTest {
      * successfully removed from the showtime repository.
      */
     @Test
+    @Order(1)
     public void deleteAll() {
         showtimeTestService.deleteAll();
         assertThat(showtimeTestService.showtimeRepository.findAll().isEmpty(), is(true));
@@ -100,6 +105,7 @@ public class ShowtimeTest {
      * @throws Exception if an error occurs during showtime retrieval, data comparison, or the addition of new showtimes
      */
     @Test
+    @Order(2)
     public void addShowtimeFlow() throws Exception {
         Showtime showtime0 = objectMapper.treeToValue(showtimeTestService.showtimesData.get(0).get("content"), Showtime.class);
         Showtime showtimeResponse = showtimeTestService.getShowtimeById(showtime0.getId());
@@ -136,6 +142,7 @@ public class ShowtimeTest {
      * @throws Exception if any error occurs during the update process or while validating the results
      */
     @Test
+    @Order(3)
     public void updateShowtimeFlow() throws Exception {
         MvcResult response = showtimeTestService.updateShowtime(1, 0);
         assertEquals(200, response.getResponse().getStatus());
@@ -173,6 +180,7 @@ public class ShowtimeTest {
      *                   retrieval, addition, or updating operations.
      */
     @Test
+    @Order(4)
     public void deleteShowtimeFlow() throws Exception {
         MvcResult response = showtimeTestService.deleteShowtime(showtime0.getId());
         assertEquals(200, response.getResponse().getStatus());

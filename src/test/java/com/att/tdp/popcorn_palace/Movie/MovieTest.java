@@ -4,6 +4,9 @@ import com.att.tdp.popcorn_palace.entity.Movie;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MovieTest {
 
     @Autowired
@@ -41,6 +45,7 @@ public class MovieTest {
     @BeforeEach
     public void init() {
         objectMapper = new ObjectMapper();
+        movieTestService.deleteAll();
         try {
             MvcResult result = movieTestService.addMovie(movieTestService.movieTitles.get(0));
             assertEquals(201, result.getResponse().getStatus());
@@ -80,6 +85,7 @@ public class MovieTest {
      * are deleted from the movie repository.
      */
     @Test
+    @Order(1)
     public void deleteAll() {
         movieTestService.deleteAll();
         assertThat(movieTestService.movieRepository.findAll().isEmpty(), is(true));
@@ -100,6 +106,7 @@ public class MovieTest {
      *                   retrieving movies, or performing assertions.
      */
     @Test
+    @Order(2)
     public void addMovieFlow() throws Exception {
         MvcResult response = movieTestService.addMovie(movieTestService.movieTitles.get(2));
         assertEquals(400, response.getResponse().getStatus());
@@ -138,6 +145,7 @@ public class MovieTest {
      *    with the database state remaining unchanged.
      */
     @Test
+    @Order(3)
     public void updateMovieFlow() throws Exception {
         MvcResult response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 0);
         currMovie0 = objectMapper.readValue(response.getResponse().getContentAsString(), Movie.class);
@@ -167,6 +175,7 @@ public class MovieTest {
      * 4. Deletes another movie and verifies the response and its removal from the repository.
      */
     @Test
+    @Order(4)
     public void deleteMovieFlow() throws Exception {
         MvcResult response = movieTestService.deleteMovie(movieTestService.movieTitles.get(0));
         assertEquals(200, response.getResponse().getStatus());
