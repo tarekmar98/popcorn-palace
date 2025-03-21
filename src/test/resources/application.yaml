@@ -3,20 +3,18 @@ server:
 
 spring:
   application:
-    name: popcorn-palace
+    name: popcorn-palace-test
   datasource:
-    url: jdbc:h2:mem:db;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-  sql:
-    init:
-      platform: mssql
-  h2:
-    console:
-      enabled: true
+    url: jdbc:postgresql://localhost:54321/popcorn-palace-test
+    username: popcorn-palace-test
+    password: popcorn-palace-test
+    driverClassName: org.postgresql.Driver
+    platform: postgres
   jpa:
     database: POSTGRESQL
     show-sql: true
     hibernate:
       ddl-auto: update
+  sql:
+    init:
+      mode: always
