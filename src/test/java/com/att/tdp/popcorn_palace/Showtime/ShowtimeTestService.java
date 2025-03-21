@@ -3,6 +3,7 @@ package com.att.tdp.popcorn_palace.Showtime;
 import com.att.tdp.popcorn_palace.Movie.MovieTestService;
 import com.att.tdp.popcorn_palace.entity.Movie;
 import com.att.tdp.popcorn_palace.entity.Showtime;
+import com.att.tdp.popcorn_palace.repository.ShowtimeRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -13,12 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @Service
@@ -28,6 +28,9 @@ public class ShowtimeTestService {
 
     @Autowired
     public MovieTestService movieTestService;
+
+    @Autowired
+    public ShowtimeRepository showtimeRepository;
 
     public JsonNode showtimesData;
     private ObjectMapper objectMapper;
@@ -52,6 +55,7 @@ public class ShowtimeTestService {
             moviesData.fieldNames().forEachRemaining(movieTitles::add);
             movieTestService.deleteMovie(movieTitles.get(0));
             MvcResult result = movieTestService.addMovie(movieTitles.get(0));
+            assertEquals(201, result.getResponse().getStatus());
             movie = objectMapper.readValue(result.getResponse().getContentAsString(), Movie.class);
             showtimesData = data.get("showtimes");
             updatedShowtimes = new ArrayList<>();
@@ -141,5 +145,9 @@ public class ShowtimeTestService {
                 .andReturn();
 
         return result;
+    }
+
+    public void deleteAll() throws Exception {
+        showtimeRepository.deleteAll();
     }
 }
