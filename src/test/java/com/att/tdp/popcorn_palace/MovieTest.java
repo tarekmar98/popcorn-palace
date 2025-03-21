@@ -55,7 +55,7 @@ public class MovieTest {
             objectMapper = new ObjectMapper();
             resourcesRoot = Paths.get("").toAbsolutePath() +
                     "\\src\\test\\java\\com\\att\\tdp\\popcorn_palace\\resources\\";
-            File file = new File(resourcesRoot, "MovieDataTest.json");
+            File file = new File(resourcesRoot, "DataTest.json");
             JsonNode data = objectMapper.readTree(file);
             moviesData = data.get("movies");
             movieTitles = new ArrayList<>();
