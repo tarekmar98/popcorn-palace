@@ -46,5 +46,22 @@
       "content": { "movieId": 1, "price":50.8, "theater": "Theater", "startTime": "2025-02-16T10:00:46.125405Z", "endTime": "2025-02-16T14:00:46.125405Z" },
       "updates": []
     }
+  ],
+  "tickets": [
+    {
+      "content": { "showtimeId": 1, "seatNumber": 105 , "userId":"84438967-f68f-4fa0-b620-0f08217e76af"}
+    },
+    {
+      "content": { "showtimeId": 2, "seatNumber": 105 , "userId":"84928967-1568f-4fa0-b620-0f08217ek3af"}
+    },
+    {
+      "content": { "showtimeId": 1, "seatNumber": 80}
+    },
+    {
+      "content": { "showtimeId": 3, "seatNumber": 195 , "userId":"84438967-f68f-4fa0-b620-0f08217e76af"}
+    },
+    {
+      "content": { "showtimeId": 1, "seatNumber": 105 , "userId":"84928967-1568f-4fa0-b620-0f08217ek3af"}
+    }
   ]
 }
