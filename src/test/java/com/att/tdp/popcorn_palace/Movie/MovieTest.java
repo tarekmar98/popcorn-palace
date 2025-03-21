@@ -1,7 +1,6 @@
 package com.att.tdp.popcorn_palace.Movie;
 
 import com.att.tdp.popcorn_palace.entity.Movie;
-import com.att.tdp.popcorn_palace.repository.MovieRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,9 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MovieTest {
-
-    @Autowired
-    private MovieRepository movieRepository;
 
     @Autowired
     private MovieTestService movieTestService;
@@ -38,6 +32,7 @@ public class MovieTest {
         objectMapper = new ObjectMapper();
         try {
             MvcResult result = movieTestService.addMovie(movieTestService.movieTitles.get(0));
+            assertEquals(201, result.getResponse().getStatus());
             currMovie0 = objectMapper.readValue(result.getResponse().getContentAsString(), Movie.class);
 
         } catch (Exception e) {
@@ -46,6 +41,7 @@ public class MovieTest {
 
         try {
             MvcResult result = movieTestService.addMovie(movieTestService.movieTitles.get(1));
+            assertEquals(201, result.getResponse().getStatus());
             currMovie1 = objectMapper.readValue(result.getResponse().getContentAsString(), Movie.class);
 
         } catch (Exception e) {
@@ -62,8 +58,8 @@ public class MovieTest {
 
     @Test
     public void deleteAll() throws Exception {
-        movieRepository.deleteAll();
-        assertThat(movieRepository.findAll().isEmpty(), is(true));
+        movieTestService.deleteAll();
+        assertThat(movieTestService.movieRepository.findAll().isEmpty(), is(true));
     }
 
     @Test
@@ -101,39 +97,39 @@ public class MovieTest {
         MvcResult response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 0);
         currMovie0 = objectMapper.readValue(response.getResponse().getContentAsString(), Movie.class);
         assertEquals(200, response.getResponse().getStatus());
-        assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
+        assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
 
         response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 1);
         assertEquals(400, response.getResponse().getStatus());
-        assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
+        assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
 
         response = movieTestService.updateMovie(movieTestService.movieTitles.get(1), 0);
         assertEquals(400, response.getResponse().getStatus());
-        assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(1)).toString(), currMovie1.toString());
+        assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(1)).toString(), currMovie1.toString());
 
         response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 2);
         assertEquals(400, response.getResponse().getStatus());
-        assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
+        assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
     }
 
     @Test
     public void deleteMovieFlow() throws Exception {
         MvcResult response = movieTestService.deleteMovie(movieTestService.movieTitles.get(0));
         assertEquals(200, response.getResponse().getStatus());
-        assertNull(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)));
+        assertNull(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)));
 
         response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 0);
         assertEquals(404, response.getResponse().getStatus());
-        assertNull(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)));
+        assertNull(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)));
 
         response = movieTestService.addMovie(movieTestService.movieTitles.get(0));
         assertEquals(201, response.getResponse().getStatus());
         Movie movie = objectMapper.readValue(response.getResponse().getContentAsString(), Movie.class);
-        assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), movie.toString());
+        assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), movie.toString());
 
         response = movieTestService.deleteMovie(movieTestService.movieTitles.get(1));
         assertEquals(200, response.getResponse().getStatus());
-        assertNull(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(1)));
+        assertNull(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(1)));
     }
 
 }
