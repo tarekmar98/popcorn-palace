@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
+/**
+ * Repository interface for performing custom database operations related to the Ticket entity.
+ * This interface extends JpaRepository, providing built-in methods for interacting with the Ticket database table.
+ */
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("SELECT t FROM Ticket t WHERE t.showtimeId = :showtimeId AND t.seatNumber = :seatNumber")

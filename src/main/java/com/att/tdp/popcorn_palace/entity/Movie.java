@@ -7,6 +7,12 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Entity class representing a movie in a cinema management system.
+ * The Movie class contains attributes to define its title, genre, duration, rating, and release year.
+ * This class is annotated with JPA annotations to be mapped to a database table.
+ * It includes validation logic for its fields.
+ */
 @Getter
 @Setter
 @Entity
