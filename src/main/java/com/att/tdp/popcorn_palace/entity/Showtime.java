@@ -10,6 +10,12 @@ import lombok.Setter;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+/**
+ * Entity class representing a showtime in a cinema management system.
+ * The Showtime class contains attributes to define its movie ID, theater, start and end times, and ticket price.
+ * It includes validation logic for its fields and overrides the toString method for easy debugging and logging.
+ * This class is mapped to a database table using JPA annotations.
+ */
 @Getter
 @Setter
 @Entity

@@ -6,6 +6,12 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * Entity class representing a ticket in a cinema booking system.
+ * A Ticket associates a specific user with a particular seat and showtime.
+ * Each ticket is uniquely identified by a booking ID.
+ * The class provides validation logic for its properties.
+ */
 @Getter
 @Setter
 @Entity

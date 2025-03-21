@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
+/**
+ * Service class responsible for handling operations related to the Ticket entity.
+ * This class provides methods for booking tickets and checking seat availability.
+ */
 @Service
 public class TicketService {
     @Autowired
@@ -18,6 +21,17 @@ public class TicketService {
     @Autowired
     private ShowtimeService showtimeService;
 
+    /**
+     * Books a ticket for a specific showtime and seat if all validations are met.
+     * This method validates the ticket details, ensures the showtime exists,
+     * and verifies that the specified seat is available. It then saves the ticket
+     * and returns a response containing the booking ID.
+     *
+     * @param ticket the Ticket object containing the details of the showtime, seat, and user
+     * @return a map containing the booking ID associated with the successfully booked ticket
+     * @throws IllegalArgumentException if the ticket details are invalid or the seat is not empty
+     * @throws ResourceNotFoundException if the specified showtime does not exist
+     */
     public Map<String, String> bookTicket(Ticket ticket) {
         System.out.println("1"+ticket);
         String validation = ticket.validate();
@@ -44,6 +58,15 @@ public class TicketService {
 
     }
 
+    /**
+     * Checks if a specific seat in a given showtime is empty or not.
+     * Retrieves any existing ticket associated with the specified
+     * showtime and seat number and returns true if the seat is not occupied.
+     *
+     * @param showtimeId the ID of the showtime to check the seat for
+     * @param seatNumber the seat number to verify for availability
+     * @return true if the seat is empty, false otherwise
+     */
     public boolean seatIsEmpty(Long showtimeId, Integer seatNumber) {
         Ticket oldTicket = ticketRepository.getTicketsByShowtimeSeatNumber(showtimeId, seatNumber);
         return oldTicket == null;
