@@ -35,11 +35,17 @@ public class MovieTest {
 
     @BeforeEach
     public void init() {
+        objectMapper = new ObjectMapper();
         try {
-            objectMapper = new ObjectMapper();
             MvcResult result = movieTestService.addMovie(movieTestService.movieTitles.get(0));
             currMovie0 = objectMapper.readValue(result.getResponse().getContentAsString(), Movie.class);
-            result = movieTestService.addMovie(movieTestService.movieTitles.get(1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            MvcResult result = movieTestService.addMovie(movieTestService.movieTitles.get(1));
             currMovie1 = objectMapper.readValue(result.getResponse().getContentAsString(), Movie.class);
 
         } catch (Exception e) {
@@ -93,7 +99,6 @@ public class MovieTest {
     @Test
     public void updateMovieFlow() throws Exception {
         MvcResult response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 0);
-        response.getResponse().getContentAsString();
         currMovie0 = objectMapper.readValue(response.getResponse().getContentAsString(), Movie.class);
         assertEquals(200, response.getResponse().getStatus());
         assertEquals(movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
