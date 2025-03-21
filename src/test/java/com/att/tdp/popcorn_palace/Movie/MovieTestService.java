@@ -1,6 +1,7 @@
 package com.att.tdp.popcorn_palace.Movie;
 
 import com.att.tdp.popcorn_palace.entity.Movie;
+import com.att.tdp.popcorn_palace.repository.MovieRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,14 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MovieTestService {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    public MovieRepository movieRepository;
+
     private Map<String, List<Movie>> updatedMovies;
     public List<String> movieTitles;
     public JsonNode moviesData;
@@ -96,5 +99,9 @@ public class MovieTestService {
                 .andReturn();
 
         return result;
+    }
+
+    public void deleteAll() throws Exception {
+        movieRepository.deleteAll();
     }
 }
