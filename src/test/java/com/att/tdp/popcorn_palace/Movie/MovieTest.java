@@ -16,6 +16,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for verifying the functionality of Movie-related operations.
+ *
+ * This class contains unit tests that ensure the correctness of movie addition,
+ * deletion, update, and retrieval. The tests are executed within a Spring Boot test context,
+ * using `MockMvc` to simulate HTTP requests and responses.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class MovieTest {
@@ -27,6 +34,10 @@ public class MovieTest {
     private Movie currMovie0;
     private Movie currMovie1;
 
+    /**
+     * Initializes test data before each test by adding two movies,
+     * verifying their HTTP responses, and parsing the responses into Movie objects.
+     */
     @BeforeEach
     public void init() {
         objectMapper = new ObjectMapper();
@@ -49,6 +60,14 @@ public class MovieTest {
         }
     }
 
+    /**
+     * Cleans up test data after each test execution by deleting all movies added during the test.
+     *
+     * This method iterates over the list of movie titles maintained by the `movieTestService` and
+     * invokes the `deleteMovie` method for each title, ensuring that the test environment is reset.
+     *
+     * @throws Exception if an error occurs during the deletion of a movie
+     */
     @AfterEach
     public void cleanUp() throws Exception {
         for (String movieTitle : movieTestService.movieTitles) {
@@ -56,12 +75,30 @@ public class MovieTest {
         }
     }
 
+    /**
+     * Tests the `deleteAll` method of the `movieTestService` to ensure all movie entities
+     * are deleted from the movie repository.
+     */
     @Test
-    public void deleteAll() throws Exception {
+    public void deleteAll() {
         movieTestService.deleteAll();
         assertThat(movieTestService.movieRepository.findAll().isEmpty(), is(true));
     }
 
+    /**
+     * Tests the flow of adding movies and verifies the system's behavior when attempting
+     * to add movies that already exist or do not exist in the test data.
+     *
+     * The method performs the following steps:
+     * 1. Attempts to add two movies from the test data that are considered invalid for addition.
+     *    Verifies that the HTTP status code in both cases is 400 (Bad Request).
+     * 2. Retrieves all movies currently in the system.
+     * 3. Ensures all expected existing movies have been validated and none are missing,
+     *    and That no non-existing movies are present.
+     *
+     * @throws Exception if an error occurs during the process of adding movies,
+     *                   retrieving movies, or performing assertions.
+     */
     @Test
     public void addMovieFlow() throws Exception {
         MvcResult response = movieTestService.addMovie(movieTestService.movieTitles.get(2));
@@ -92,6 +129,14 @@ public class MovieTest {
         assertTrue(existMovies.isEmpty());
     }
 
+    /**
+     * Tests the flow for updating movies and validates the responses.
+     *
+     * Verifies the following:
+     * 1. Successfully updates a movie and checks the response and database consistency.
+     * 2. Attempts invalid updates and ensures the response status is 400,
+     *    with the database state remaining unchanged.
+     */
     @Test
     public void updateMovieFlow() throws Exception {
         MvcResult response = movieTestService.updateMovie(movieTestService.movieTitles.get(0), 0);
@@ -112,6 +157,15 @@ public class MovieTest {
         assertEquals(movieTestService.movieRepository.getMovieByTitle(movieTestService.movieTitles.get(0)).toString(), currMovie0.toString());
     }
 
+    /**
+     * Tests the flow for deleting movies and validates the outcomes.
+     *
+     * Steps:
+     * 1. Deletes an existing movie and verifies the response and removal from the repository.
+     * 2. Attempts to update the deleted movie, expecting a 404 response with no repository changes.
+     * 3. Re-adds the deleted movie, checks the response, and ensures it is correctly saved in the repository.
+     * 4. Deletes another movie and verifies the response and its removal from the repository.
+     */
     @Test
     public void deleteMovieFlow() throws Exception {
         MvcResult response = movieTestService.deleteMovie(movieTestService.movieTitles.get(0));

@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ShowtimeTest {
@@ -27,6 +28,16 @@ public class ShowtimeTest {
     private Showtime showtime0;
     private Showtime showtime1;
 
+    /**
+     * Initializes the test context by performing the following actions:
+     * 1. Deletes all records from the associated showtime repository to ensure a clean test environment.
+     * 2. Adds two predefined showtime instances to the system, and validates
+     *    their successful creation by checking the response status.
+     * 3. Updates the `movieId` field for the test showtime instances using the ID of the associated movie.
+     *
+     * @throws Exception if any error occurs during the setup process, including ObjectMapper configuration,
+     *                   data deletion, or showtime creation.
+     */
     @BeforeEach
     public void init() throws Exception {
         objectMapper = new ObjectMapper();
@@ -52,6 +63,12 @@ public class ShowtimeTest {
 
     }
 
+    /**
+     * Cleans up the test environment after each test execution.
+     * This method iterates through the list of showtime IDs to delete the associated showtime.
+     *
+     * @throws Exception if any error occurs during the cleanup process, particularly when calling the `deleteShowtime` method.
+     */
     @AfterEach
     public void cleanUp() throws Exception {
         for (Long showtimeId : showtimeTestService.showtimesId) {
@@ -59,12 +76,29 @@ public class ShowtimeTest {
         }
     }
 
+    /**
+     * Tests the deletion of all records in the showtime repository, then ensures that all records are
+     * successfully removed from the showtime repository.
+     */
     @Test
-    public void deleteAll() throws Exception {
+    public void deleteAll() {
         showtimeTestService.deleteAll();
         assertThat(showtimeTestService.showtimeRepository.findAll().isEmpty(), is(true));
     }
 
+    /**
+     * Tests the process of adding showtime records to the system and validating their presence.
+     *
+     * This method performs the following actions:
+     * 1. Retrieves a predefined showtime from the test data and validates that it exists in the system
+     *    by comparing its content with the response of the `getShowtimeById` method.
+     * 2. Attempts to add showtimes using invalid indices from the preloaded data, expecting the server
+     *    to return a 400 status code for each attempt.
+     * 3. Retrieves a list of existing showtimes from preloaded test data and validates that each of them
+     *    matches the corresponding record retrieved from the system based on their unique identifiers.
+     *
+     * @throws Exception if an error occurs during showtime retrieval, data comparison, or the addition of new showtimes
+     */
     @Test
     public void addShowtimeFlow() throws Exception {
         Showtime showtime0 = objectMapper.treeToValue(showtimeTestService.showtimesData.get(0).get("content"), Showtime.class);
@@ -89,6 +123,18 @@ public class ShowtimeTest {
         }
     }
 
+    /**
+     * Tests the process of updating existing showtime records in the system and validating the responses.
+     *
+     * This test performs several actions:
+     * 1. Successfully updates a predefined showtime record and validates the response status
+     *    as well as the content of the updated showtime using direct retrieval from the system.
+     * 2. Tests invalid update operations by providing incorrect or inconsistent indices,
+     *    ensuring the server responds with appropriate HTTP status codes (400 for bad requests,
+     *    and 404 when the entity is not found).
+     *
+     * @throws Exception if any error occurs during the update process or while validating the results
+     */
     @Test
     public void updateShowtimeFlow() throws Exception {
         MvcResult response = showtimeTestService.updateShowtime(1, 0);
@@ -110,6 +156,22 @@ public class ShowtimeTest {
         assertEquals(400, response.getResponse().getStatus());
     }
 
+    /**
+     * Tests the flow of deleting, adding, retrieving, and updating showtime records using the showtime service.
+     *
+     * This test performs the following steps:
+     * 1. Deletes a predefined showtime record by its ID and validates the operation's success.
+     *    Ensures the response status is 200 (OK).
+     * 2. Attempts to retrieve the deleted showtime by its ID, expecting a 404 (Not Found) response.
+     * 3. Attempts to update a nonexistent showtime, expecting a 404 (Not Found) response.
+     * 4. Adds a showtime with a predefined configuration, validates its creation by checking the response
+     *    status and comparing the created showtime's properties with the expected values.
+     * 5. Deletes the newly added showtime and validates the operation's success, ensuring the response status is 200 (OK).
+     * 6. Attempts to delete a showtime with a non-existent ID, expecting a 404 (Not Found) response.
+     *
+     * @throws Exception if any error occurs during the execution of the tests, such as issues with deletion,
+     *                   retrieval, addition, or updating operations.
+     */
     @Test
     public void deleteShowtimeFlow() throws Exception {
         MvcResult response = showtimeTestService.deleteShowtime(showtime0.getId());

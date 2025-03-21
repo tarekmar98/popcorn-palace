@@ -20,6 +20,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+/**
+ * Service class designed to support ticket-related test operations
+ * in the application, including initialization, booking, retrieval,
+ * and deletion of ticket records.
+ */
 @Service
 public class TicketTestService {
 
@@ -39,6 +44,12 @@ public class TicketTestService {
 
     public TicketTestService() {}
 
+    /**
+     * Initializes test data for movies and showtimes:
+     * 1. Reads data from `DataTest.json`.
+     * 2. Deletes and re-adds a test movie, verifying the operation.
+     * 3. Updates and prepares showtime data linked to the test movie.
+     */
     @PostConstruct
     public void init() {
         try {
@@ -78,6 +89,15 @@ public class TicketTestService {
         }
     }
 
+    /**
+     * Sends a POST request to create a booking for the specified ticket number.
+     * If the booking is successful, the ticket's booking ID is updated with the
+     * ID returned in the response.
+     *
+     * @param ticketNum the index of the ticket in the tickets list to be booked
+     * @return an MvcResult object containing the response of the booking request
+     * @throws Exception if an error occurs during the booking process
+     */
     public MvcResult setTicket(int ticketNum) throws Exception {
         Ticket ticket = tickets.get(ticketNum);
         String ticketString = objectMapper.writeValueAsString(ticket);
@@ -94,11 +114,22 @@ public class TicketTestService {
         return response;
     }
 
+    /**
+     * Retrieves all ticket records from the ticket repository.
+     *
+     * @return a list of all tickets stored in the repository
+     * @throws Exception if there is an error during the retrieval process
+     */
     public List<Ticket> getAllTicketRepository() throws Exception {
         List<Ticket> allTickets = ticketRepository.findAll();
         return allTickets;
     }
 
+    /**
+     * Deletes all ticket records from the ticket repository.
+     *
+     * @throws Exception if an error occurs during the deletion process
+     */
     public void deleteAllTicketRepository() throws Exception {
         ticketRepository.deleteAll();
     }

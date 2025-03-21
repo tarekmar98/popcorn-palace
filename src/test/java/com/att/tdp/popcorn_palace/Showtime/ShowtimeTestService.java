@@ -21,6 +21,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
+/**
+ * Service class to manage and test showtimes functionalities. This class is
+ * used to initialize test data and perform CRUD operations for showtimes
+ * using MockMvc. It involves integration with the MovieTestService and
+ * ShowtimeRepository for dependencies.
+ */
 @Service
 public class ShowtimeTestService {
     @Autowired
@@ -40,6 +46,11 @@ public class ShowtimeTestService {
 
     public ShowtimeTestService() {}
 
+    /**
+     * Initializes test data for movies and showtimes:
+     * 1. Deletes and re-adds a test movie, verifying the operation.
+     * 2. Updates and prepares showtime data linked to the test movie.
+     */
     @PostConstruct
     public void init() {
         try {
@@ -83,6 +94,13 @@ public class ShowtimeTestService {
         }
     }
 
+    /**
+     * Retrieves a Showtime object by its unique identifier.
+     *
+     * @param id the unique identifier of the showtime to retrieve
+     * @return the Showtime object corresponding to the provided id
+     * @throws Exception if an error occurs during the HTTP request or response processing
+     */
     public Showtime getShowtimeById(Long id) throws Exception {
         MvcResult result = mockMvc.perform(get("/showtimes/" + id.toString()))
                 .andReturn();
@@ -92,6 +110,13 @@ public class ShowtimeTestService {
         return showtime;
     }
 
+    /**
+     * Retrieves a showtime by its ID using the MVC framework.
+     *
+     * @param id The unique identifier of the showtime to be retrieved.
+     * @return The MvcResult containing the response of the request for the specified showtime.
+     * @throws Exception if an error occurs while performing the request.
+     */
     public MvcResult getShowtimeByIdMvc(Long id) throws Exception {
         MvcResult result = mockMvc.perform(get("/showtimes/" + id.toString()))
                 .andReturn();
@@ -99,6 +124,15 @@ public class ShowtimeTestService {
         return result;
     }
 
+    /**
+     * Adds a showtime to the system by making a POST request and returns the result of the operation.
+     * The showtime data is retrieved from a preloaded source, modified, and sent in the POST request.
+     * Updates the local data structure with the newly assigned ID if the operation is successful.
+     *
+     * @param showtimeNum the index of the showtime in the preloaded data to be added
+     * @return an MvcResult object containing the server's response to the POST request
+     * @throws Exception if an error occurs during the execution of the POST request or data processing
+     */
     public MvcResult addShowtime(int showtimeNum) throws Exception {
         Showtime showtime = objectMapper.treeToValue(showtimesData.get(showtimeNum).get("content"), Showtime.class);
         Long currId = showtime.getId();
@@ -124,6 +158,14 @@ public class ShowtimeTestService {
         return result;
     }
 
+    /**
+     * Updates an existing showtime with new details provided in the request.
+     *
+     * @param showtimeNum the index of the showtime to be updated in the updatedShowtimes list
+     * @param updateNum the index of the updated showtime details within the nested list
+     * @return an MvcResult object containing the result of the mock MVC request used to update the showtime
+     * @throws Exception if an error occurs while performing the mock MVC request
+     */
     public MvcResult updateShowtime(int showtimeNum, int updateNum) throws Exception {
         Showtime showtime = updatedShowtimes.get(showtimeNum).get(updateNum);
         Long currId = showtime.getId();
@@ -140,6 +182,13 @@ public class ShowtimeTestService {
 
     }
 
+    /**
+     * Deletes a showtime with the specified ID.
+     *
+     * @param id the unique identifier of the showtime to be deleted
+     * @return the result of the mock MVC request, encapsulated in an MvcResult object
+     * @throws Exception if an error occurs during the deletion process
+     */
     public MvcResult deleteShowtime(Long id) throws Exception {
         MvcResult result = mockMvc.perform(delete("/showtimes/" + id.toString()))
                 .andReturn();
@@ -147,7 +196,10 @@ public class ShowtimeTestService {
         return result;
     }
 
-    public void deleteAll() throws Exception {
+    /**
+     * Deletes all records from the associated data repository.
+     */
+    public void deleteAll() {
         showtimeRepository.deleteAll();
     }
 }

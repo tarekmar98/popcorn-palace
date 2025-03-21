@@ -29,6 +29,15 @@ public class TicketTest {
     @Autowired
     private ShowtimeService showtimeService;
 
+    /**
+     * Initializes the environment and test data needed for ticket-related test cases.
+     * Performs the following operations:
+     * 1. Configures the `ObjectMapper` with JavaTimeModule for date-time serialization.
+     * 2. Clears all ticket records from the repository.
+     * 3. Attempts to set up and book two tickets from the test data.
+     *
+     * @throws Exception if any error occurs during initialization or ticket booking.
+     */
     @BeforeEach
     public void init() throws Exception {
         objectMapper = new ObjectMapper();
@@ -52,12 +61,29 @@ public class TicketTest {
 
     }
 
+    /**
+     * Tests the functionality of deleting all ticket records from the ticket repository,
+     * and verifies that All tickets are deleted from the repository
+     *
+     * @throws Exception if any error occurs during the test execution
+     */
     @Test
     public void deleteAllTicketRepository() throws Exception {
         ticketTestService.deleteAllTicketRepository();
         assertThat(ticketTestService.ticketRepository.findAll().isEmpty(), is(true));
     }
 
+    /**
+     * Tests the flow of adding tickets through the booking system, ensuring proper status
+     * codes are returned and verifying the storage of tickets within the repository.
+     *
+     * The method performs the following tests:
+     * 1. Add tickets and verifies the HTTP response status codes.
+     * 2. Retrieves all ticket records from the repository and
+     *    checks that only the tickets that were supposed to be added were added.
+     *
+     * @throws Exception if any error occurs during the test execution
+     */
     @Test
     public void addTicketFlow() throws Exception {
         MvcResult response = ticketTestService.setTicket(2);
@@ -85,6 +111,18 @@ public class TicketTest {
 
     }
 
+    /**
+     * Tests the functionality of deleting a showtime along with its associated tickets.
+     *
+     * This method performs the following steps:
+     * 1. Retrieves all existing tickets from the ticket repository before the deletion operation,
+     *    and verifies that specific tickets are present in the repository prior to deletion.
+     * 2. Deletes a specified showtime using its ID, which also triggers the deletion of the related tickets.
+     * 3. Retrieves all tickets from the repository after the deletion operation, and verifies that
+     *    the tickets associated with the deleted showtime are no longer present in the repository.
+     *
+     * @throws Exception if any error occurs during the test execution
+     */
     @Test
     public void deleteShowtimeWithTickets() throws Exception {
         List<Ticket> ticketsBefore = ticketTestService.getAllTicketRepository();
