@@ -1,4 +1,4 @@
-package com.att.tdp.popcorn_palace.resources;
+package com.att.tdp.popcorn_palace.Movie;
 
 import com.att.tdp.popcorn_palace.entity.Movie;
 import com.fasterxml.jackson.core.type.TypeReference;

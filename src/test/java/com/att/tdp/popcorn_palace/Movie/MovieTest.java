@@ -1,8 +1,7 @@
-package com.att.tdp.popcorn_palace;
+package com.att.tdp.popcorn_palace.Movie;
 
 import com.att.tdp.popcorn_palace.entity.Movie;
 import com.att.tdp.popcorn_palace.repository.MovieRepository;
-import com.att.tdp.popcorn_palace.resources.MovieTestService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
