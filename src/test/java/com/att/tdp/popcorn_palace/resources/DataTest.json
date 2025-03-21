@@ -22,5 +22,29 @@
       "content": { "title": "Title 1", "genre": "Drama", "duration": 100, "rating": 6, "releaseYear": 2010 },
       "updates": []
     }
-  }
+  },
+  "showtimes": [
+    {
+      "content": { "movieId": 1, "price":20.2, "theater": "Sample Theater", "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" },
+      "updates": [
+        { "movieId": 1, "price":20.2, "startTime": "2025-02-14T11:47:46.125405Z", "endTime": "2025-02-14T14:47:46.125405Z" },
+        { "movieId": 1, "price":20.2, "theater": "Sample Theater", "startTime": "2025-02-17T12:47:46.125405Z", "endTime": "2025-02-17T15:47:46.125405Z" }
+      ]
+    },
+    {
+      "content": { "movieId": 1, "price":50.8, "theater": "Sample Theater", "startTime": "2025-02-16T11:47:46.125405Z", "endTime": "2025-02-16T14:47:46.125405Z" },
+      "updates": [
+        { "movieId": 1, "price":13.6, "theater": "Sample Theater", "startTime": "2025-02-17T11:47:46.125405Z", "endTime": "2025-02-17T14:47:46.125405Z" },
+        { "movieId": 3, "price":50.8, "theater": "Sample Theater", "startTime": "2025-02-16T11:47:46.125405Z", "endTime": "2025-02-16T14:47:46.125405Z" }
+      ]
+    },
+    {
+      "content": { "price":50.8, "theater": "Sample Theater 1", "startTime": "2025-02-16T11:47:46.125405Z", "endTime": "2025-02-16T14:47:46.125405Z" },
+      "updates": []
+    },
+    {
+      "content": { "movieId": 1, "price":50.8, "theater": "Sample Theater", "startTime": "2025-02-16T10:00:46.125405Z", "endTime": "2025-02-16T14:00:46.125405Z" },
+      "updates": []
+    }
+  ]
 }
