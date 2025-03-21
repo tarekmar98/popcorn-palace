@@ -1,11 +1,15 @@
 package com.att.tdp.popcorn_palace.Ticket;
 
+import com.att.tdp.popcorn_palace.entity.Showtime;
 import com.att.tdp.popcorn_palace.entity.Ticket;
 import com.att.tdp.popcorn_palace.service.ShowtimeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.MethodOrderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketTest {
 
     @Autowired
@@ -68,6 +73,7 @@ public class TicketTest {
      * @throws Exception if any error occurs during the test execution
      */
     @Test
+    @Order(1)
     public void deleteAllTicketRepository() throws Exception {
         ticketTestService.deleteAllTicketRepository();
         assertThat(ticketTestService.ticketRepository.findAll().isEmpty(), is(true));
@@ -85,6 +91,7 @@ public class TicketTest {
      * @throws Exception if any error occurs during the test execution
      */
     @Test
+    @Order(2)
     public void addTicketFlow() throws Exception {
         MvcResult response = ticketTestService.setTicket(2);
         assertEquals(400, response.getResponse().getStatus());
@@ -124,6 +131,7 @@ public class TicketTest {
      * @throws Exception if any error occurs during the test execution
      */
     @Test
+    @Order(3)
     public void deleteShowtimeWithTickets() throws Exception {
         List<Ticket> ticketsBefore = ticketTestService.getAllTicketRepository();
         List<String> ticketsBeforeString = new ArrayList<>();
@@ -142,6 +150,10 @@ public class TicketTest {
         }
 
         assertFalse(ticketsAfterString.contains(ticket0.toString()));
+        ticketTestService.showtime0.setId(null);
+        MvcResult result = ticketTestService.showtimeTestService.addShowtime(0);
+        ticketTestService.showtime0 = objectMapper.readValue(result.getResponse().getContentAsString(), Showtime.class);
+        ticketTestService.showtime0.setMovieId(ticketTestService.showtimeTestService.movie.getId());
     }
 
 }
