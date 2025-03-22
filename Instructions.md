@@ -16,17 +16,20 @@
 
 ### Run the App
 #### Init the docker for the app:
-`docker-compose -f compose.yml up -d`
+- `docker-compose -f compose.yml up -d`
 
 #### Run the app:
-`./mvnw spring-boot:run`
+- `./mvnw spring-boot:run`
 
 #### Terminate the app:
-Press 'ctrl + c' in the terminal then enter 'y'.
+- Press 'ctrl + c' in the terminal then enter 'y'.
+
+#### Terminate the docker and delete the data:
+- `docker-compose -f compose.yml down --remove-orphans`
 
 ### Run the Tests
 #### Init the docker for the tests:
-`docker-compose -f composeTest.yml up -d`
+- `docker-compose -f composeTest.yml up -d`
 
 #### Run the tests:
 - There is three classes for tests: **MovieTest**, **ShowtimeTest** and **TicketTest**.<br><br>
@@ -37,5 +40,8 @@ Press 'ctrl + c' in the terminal then enter 'y'.
 - **The steps of each test are written in the code before the test.**<br>
 > ⚠️ **Warning:** Don't run a couple of classes at the same time, because this may cause an issue since they use the same data to manipulate the app and execute the tests.
 
+#### Terminate the docker and delete the data:
+- `docker-compose -f composeTest.yml down --remove-orphans`
+
 ### Documentation
-For each class and function there is an explanation of the inputs, the returned value and the purpose of the function.
+- **For each class and function there is an explanation of the inputs, the returned value and the purpose of the function.**
