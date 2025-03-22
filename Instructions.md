@@ -3,7 +3,7 @@
 ### Prerequisite
 - Java SDK 21
 - Java IDE
-- Docker
+- Docker - make sure it works and you can init on it postgres.
 
 ### Configuration of the Terminal
 - Make sure the terminal configured on java 21 to prevent issues.
