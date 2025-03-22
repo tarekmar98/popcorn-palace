@@ -1,17 +1,17 @@
 ## Instructions for running and testing the project
 
 ### Prerequisite
-1. Java SDK 21
-2. Java IDE
-3. Docker
+- Java SDK 21
+- Java IDE
+- Docker
 
 ### Configuration of the Terminal
 - Make sure the terminal configured on java 21 to prevent issues.
 - Make sure you are in the directory popcorn-palace.
 
 ### Configuration of intellij - if you want to run on intellij
-1. Set in the configuration java 21.
-2. Set in the project structure java 21.
+- Set in the configuration java 21.
+- Set in the project structure java 21.
 
 ### Database used
 - **The Application** uses a PostgreSQL database, which is managed and executed using Docker Compose. The database configuration is defined within the 'compose.yml' file.<br><br>
