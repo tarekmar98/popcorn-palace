@@ -1,3 +1,13 @@
+## Project Overview
+This repository contains the implementation of **popcorn palace server**, a server designed to handle cinema tickets management.
+
+### Features:
+- Build movies with Its Info.
+- Build showtimes for the movies.
+- Build tickets for those showtimes.
+- Tests for the API's.
+- Dockerized infrastructure for local run with PostgreSQL.
+
 ## Instructions for running and testing the project
 
 ### Prerequisite
